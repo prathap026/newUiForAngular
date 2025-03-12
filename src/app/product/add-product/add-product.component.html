@@ -1,0 +1,60 @@
+<div class="container-fluid ">
+    <div class="card">
+        <div class="card-header">
+            <h4>Add Products</h4>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="productForm" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-3 form-group">
+                        <label>Title</label>
+                        <input type="text" id="title" class="form-control" formControlName="prodTitle" placeholder="Enter the title">
+                    </div>
+                    <div class="col-3 form-group">
+                        <label>Description</label>
+                        <input type="text" id="description" class="form-control" formControlName="prodDesc"
+                            placeholder="Enter the description">
+                    </div>
+                    <div class="col-3 form-group">
+                        <label>Category</label>
+                        <input type="text" id="category" class="form-control" formControlName="prodCategory" placeholder="Enter the category">
+                    </div>
+                    <div class="col-3 form-group">
+                        <label>Product size</label>
+                        <input type="text" id="productSize" class="form-control" formControlName="prodSize" placeholder="Enter the product size">
+                    </div>
+                    <div class="col-3 form-group">
+                        <label>Color</label>
+                        <input type="text" id="color" class="form-control" formControlName="prodColor" placeholder="Enter the color">
+                    </div>
+
+                    <div class="col-3 form-group">
+                        <label>Price</label>
+                        <input type="text" id="price" class="form-control" formControlName="prodPrice" placeholder="Enter the price">
+                    </div>
+                    <!-- <div class="col-3 form-group">
+                        <label>Available quantity</label>
+                        <input type="text" id="availableQuantity" class="form-control" formControlName="prodAvlQuantity"
+                            placeholder="Enter the available quantity">
+                    </div> -->
+
+                    <div class="col-3 form-group">
+                        <label for="photo">Photo</label>
+                        <input type="file" id="photo" class="form-control" name="image" 
+                        formControlName="prodFile" placeholder="Upload the photo">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <div>
+                        <div class="buttons form-group">
+
+                            <button class="btn btn-primary submit mb-2 ml-2" (click)="onSubmit()">Submit</button>
+                            <button class="btn btn-danger cancel mb-2 ml-2" (click)="onCancel()" >Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

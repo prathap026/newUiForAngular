@@ -1,0 +1,40 @@
+<div class="container-fluid mt3">
+    <div class="row">
+        <div class="col">
+            <h4>User List</h4>
+        </div>
+        <div class="col text-right">
+            <button class="btn btn-success" (click)="onAdd()"> + Add User</button>
+        </div>
+    </div>
+    
+    <div class="pt-2">
+        <table class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Email id </th>
+                    <th>User name</th>
+                    <th>Gender</th>
+                    <th>Designation</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of userList; let i = index" >
+                    <td>{{i+1}}</td>
+                    <td>{{user.first_name}}</td>
+                    <td>{{user.last_name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.user_name}}</td>
+                    <td>{{user.gender_id}}</td>
+                    <td>{{user.designation}}</td>
+                    <td>{{user.role}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

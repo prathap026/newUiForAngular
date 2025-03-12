@@ -1,0 +1,17 @@
+<div id="header">
+     
+    <div id="logo">
+      <img [src]="sidebarActive ?  'assets/images/menu-icon.svg' :'assets/images/cross-icon.svg'" 
+       (click)="toggleSidebar.emit()"
+       alt="">
+      RED STORE</div>
+    <div id="menu">
+      <!-- <button (click)="home()" class="btn btn-normal">Home</button> -->
+      <!-- <a href="/main">Home</a> -->
+      <!-- <a href="#">About</a>
+      <a href="#">Services</a> -->
+      <!-- <a>Logout</a> -->
+      
+       <button (click)="logout()" class="btn btn-normal">Logout</button>
+    </div>
+  </div>

@@ -1,0 +1,19 @@
+ <div  id="container" [ngClass]="{sidebarActive: !sidebarActive}">
+  <app-side-nav></app-side-nav>
+  <div id="contentContainer">
+    <app-header
+      (toggleSidebar)="sidebarActive = !sidebarActive"
+      [sidebarActive]="sidebarActive"
+    ></app-header>
+    <div id="content">
+      
+      <div *ngIf="showWelcomeMessage">
+        <h3>Welcome to Red Store</h3>
+      </div>
+      <div class="text-center" *ngIf="showWelcomeMessage">
+        <img src="\assets\images\image1.png" alt="Biomet image" class="full-screen-image">
+      </div>
+      <router-outlet (activate)="onRouteChange()"></router-outlet>
+    </div>
+  </div>
+</div> 
