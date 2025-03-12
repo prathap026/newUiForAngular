@@ -4,11 +4,14 @@ import { LoginComponent } from './login/login.component';
 import { authGuard } from './guards/auth-guard.guard';
 import { MainComponent } from './main/main.component';
 import { SignupComponent } from './signup/signup.component';
+import { CompanyRegistrationComponent } from './company-registration/company-registration.component';
+
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   {path:'signup',component:SignupComponent},
+  {path:'company-register',component:CompanyRegistrationComponent},
   // { path: 'main', component: MainComponent },
   // {
   //   path: 'user',

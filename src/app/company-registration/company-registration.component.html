@@ -1,0 +1,139 @@
+<div class="wrapper bg-white">
+  <div class="h2 text-center">Org Registration</div>
+  <div class="h4 text-muted text-center pt-2">Enter your organization details</div>
+  <form class="pt-3" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-md-6">
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-building p-2"></span>
+            <input type="text" placeholder="Company Name" required formControlName="companyName">
+          </div>
+        </div>
+
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-id-card p-2"></span>
+            <input type="text" placeholder="Registration Number" formControlName="registrationNumber">
+          </div>
+        </div>
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-calendar p-2"></span>
+            <input type="text" placeholder="Gst Number"  formControlName="gst">
+          </div>
+        </div>
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-calendar p-2"></span>
+            <input type="date" formControlName="dateOfEstablishment" placeholder="Company Started Date">
+          </div>
+        </div>
+
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-envelope p-2"></span>
+            <input type="email" placeholder="Email" required formControlName="emailId">
+          </div>
+        </div>
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-phone p-2"></span>
+            <input type="email" placeholder="LandLine Number" required formControlName="landlineNumber">
+          </div>
+        </div>
+
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-phone p-2"></span>
+            <input type="text" placeholder="Mobile Number" required formControlName="alternateContactNumber">
+          </div>
+        </div>
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-map-marker-alt p-2"></span>
+            <input type="text" placeholder="WebsiteUrl" required formControlName="websiteUrl">
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- Right Column -->
+      <div class="col-md-6">
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-building p-2"></span>
+            <input type="text" placeholder="Company Short Name" required formControlName="companyShortName">
+          </div>
+        </div>
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-globe p-2"></span>
+            <select formControlName="countryOfIncorporation" (change)="getStateDetailByCountryId($event)">
+              <option value="">Select Country</option>
+              <option *ngFor="let item of countryResult" [value]="item.id">{{ item.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-globe p-2"></span>
+            <select formControlName="stateId" (change)="getCityDetailByStateId($event)">
+              <option value="">Select State</option>
+              <option *ngFor="let item of stateResult" [value]="item.id">{{ item.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-globe p-2"></span>
+            <select formControlName="cityId">
+              <option value="">Select City</option>
+              <option *ngFor="let item of cityResult" [value]="item.id">{{ item.name }}</option>
+            </select>
+          </div>
+        </div>
+
+
+
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-map-marker-alt p-2"></span>
+            <input type="text" placeholder="Street" required formControlName="street">
+          </div>
+        </div>
+
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-map-marker-alt p-2"></span>
+            <input type="text" placeholder="Pin Code" required formControlName="zipCode">
+          </div>
+        </div>
+
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-map-marker-alt p-2"></span>
+            <input type="text" placeholder="Comment" required formControlName="comment">
+          </div>
+        </div>
+        <div class="form-group py-2">
+          <div class="input-field">
+            <span class="fas fa-id-card p-2"></span>
+            <input type="text" placeholder="BusinessPanCard Number" required formControlName="businessPanCard">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button class="btn btn-block text-center my-3" type="submit" [disabled]="registerForm.invalid">Register</button>
+
+    <div class="text-center pt-3 text-muted">Already a member? <a routerLink="/login">Log in</a></div>
+  </form>
+</div>

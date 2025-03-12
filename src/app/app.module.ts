@@ -12,6 +12,7 @@ import { MainComponent } from './main/main.component';
 import { CustomInterceptor } from './CustomInterceptor';
 import { SignupComponent } from './signup/signup.component';
 import { ProductComponent } from './product/product.component';
+import { CompanyRegistrationComponent } from './company-registration/company-registration.component';
 
 
 @NgModule({
@@ -19,7 +20,7 @@ import { ProductComponent } from './product/product.component';
     AppComponent,
     SideNavComponent,
     HeaderComponent,
-    LoginComponent, MainComponent, SignupComponent, ProductComponent
+    LoginComponent, MainComponent, SignupComponent, ProductComponent, CompanyRegistrationComponent
   ],
   imports: [
     BrowserModule,
