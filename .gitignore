@@ -11,6 +11,8 @@
 npm-debug.log
 yarn-error.log
 
+# newUiForAngularng build --output-path docs --base-href  /top-coder/
+
 # IDEs and editors
 .idea/
 .project
