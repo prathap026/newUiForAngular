@@ -13,24 +13,35 @@ import { CustomInterceptor } from './CustomInterceptor';
 import { SignupComponent } from './signup/signup.component';
 import { ProductComponent } from './product/product.component';
 import { CompanyRegistrationComponent } from './company-registration/company-registration.component';
-
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent,
     SideNavComponent,
     HeaderComponent,
-    LoginComponent, MainComponent, SignupComponent, ProductComponent, CompanyRegistrationComponent
+    LoginComponent,
+    MainComponent,
+    SignupComponent,
+    ProductComponent,
+    CompanyRegistrationComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,ReactiveFormsModule,FormsModule,
-    HttpClientModule,UserModule,
-    
+    AppRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+    UserModule,
   ],
-  providers: [{
-    provide:HTTP_INTERCEPTORS,useClass: CustomInterceptor, multi:true
-  }],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomInterceptor,
+      multi: true,
+    },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
