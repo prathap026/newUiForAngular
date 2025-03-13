@@ -78,6 +78,22 @@ export class LoginComponent implements OnInit {
   //   }
   // }
 
+  //Sample Response
+  // resp = {
+  //   statusCode: 0,
+  //   errorMessage: null,
+  //   responseContent: {
+  //     role: 'GATEPASS_ADMIN',
+  //     phone: '9345749329',
+  //     accessToken:
+  //       'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0dBVEVQQVNTX0FETUlOIl0sInN1YiI6InByYXRoYXBzaGFubXVnYW01IiwiaWF0IjoxNzQxODQwNzM0LCJleHAiOjE3NDE5MjcxMzR9.2se5Co8kVdVkBxwHRz_o1afwGt-czobfBlFd5V4CG-0',
+  //     userName: 'prathapshanmugam5',
+  //     email: 'prathapshanmugam5@gmail.com',
+  //     refreshToken:
+  //       'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcmF0aGFwc2hhbm11Z2FtNSIsImlhdCI6MTc0MTg0MDczNCwiZXhwIjoxNzQyMDEzNTM0fQ.GJ0BPDa4spmzIGdv_e0yv0U0k7SOjxJIVguti3_c-48',
+  //   },
+  // };
+
   onSubmit() {
     if (this.loginForm.valid) {
       const payload = {
@@ -88,17 +104,22 @@ export class LoginComponent implements OnInit {
         console.log(resp);
 
         if (resp?.statusCode === 0) {
-          localStorage.setItem('Token', resp.Token); // storing the response locally
-          localStorage.setItem('Username', resp.user.username);
-          localStorage.setItem('Role', resp.user.role);
+          localStorage.setItem('role', resp?.responseContent?.role);
+          localStorage.setItem('phone', resp?.responseContent?.phone);
+          localStorage.setItem(
+            'accessToken',
+            resp?.responseContent?.accessToken
+          );
+          sessionStorage.setItem('userName', resp?.responseContent?.userName);
+          sessionStorage.setItem('email', resp?.responseContent?.email);
+          sessionStorage.setItem(
+            'refreshToken',
+            resp.responseContent.refreshToken
+          );
 
-          sessionStorage.setItem('Token', resp.token); // storing the response in session
-          sessionStorage.setItem('Username', resp.user.username);
-          sessionStorage.setItem('Role', resp.user.role);
-
-          this.route.navigate(['/main']);
+          this.route.navigate(['gatapass-admin','dashboard']);
         } else {
-          this.alert.showCustomPopup('error', 'Invalid Credential');
+          this.alert.showCustomPopup('error', resp.errorMessage);
         }
       });
     } else {

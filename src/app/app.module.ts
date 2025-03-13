@@ -14,6 +14,7 @@ import { SignupComponent } from './signup/signup.component';
 import { ProductComponent } from './product/product.component';
 import { CompanyRegistrationComponent } from './company-registration/company-registration.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     FormsModule,
     HttpClientModule,
     UserModule,
+    NgxPaginationModule
   ],
   providers: [
     {
