@@ -14,4 +14,9 @@ export class CommonService {
     const url = this.baseUrls + '/customdata/getdata';
     return this.http.post<any>(url, req);
   }
+
+  getLogin(path: any, req: any) {
+    const url = this.baseUrls + path;
+    return this.http.post<any>(url, req);
+  }
 }

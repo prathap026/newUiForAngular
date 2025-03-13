@@ -25,7 +25,8 @@ import { CompanyRegistrationComponent } from './company-registration/company-reg
   imports: [
     BrowserModule,
     AppRoutingModule,ReactiveFormsModule,FormsModule,
-    HttpClientModule,UserModule
+    HttpClientModule,UserModule,
+    
   ],
   providers: [{
     provide:HTTP_INTERCEPTORS,useClass: CustomInterceptor, multi:true

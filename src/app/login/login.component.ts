@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
+import { AlertService } from '../services/alert.service';
+import { CommonService } from '../services/common.service';
 // import { AuthService } from '../auth.service';
 
 @Component({
@@ -11,23 +13,22 @@ import { LoginService } from './login.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  passwordFieldType:string='password';
-  passwordToggleIcon:string='far fa-eye-slash';
-
+  passwordFieldType: string = 'password';
+  passwordToggleIcon: string = 'far fa-eye-slash';
 
   constructor(
     private route: Router,
     private formBuild: FormBuilder,
     private loginService: LoginService,
-    // private authService: AuthService
-  ) { }
+    private alert: AlertService,
+    private eservice: CommonService
+  ) {}
 
   ngOnInit(): void {
     this.loginForm = this.formBuild.group({
       // emailId: ['', Validators.required],
       userName: ['', Validators.required],
-      password: ['', Validators.required]
-
+      password: ['', Validators.required],
     });
   }
 
@@ -35,9 +36,13 @@ export class LoginComponent implements OnInit {
     this.route.navigate(['/register']);
   }
 
-  onTogglePasswordVisibility(){
-    this.passwordFieldType = this.passwordFieldType === 'password'?'text':'password'
-    this.passwordToggleIcon = this.passwordToggleIcon === 'far fa-eye-slash'? 'far fa-eye':'far fa-eye-slash'
+  onTogglePasswordVisibility() {
+    this.passwordFieldType =
+      this.passwordFieldType === 'password' ? 'text' : 'password';
+    this.passwordToggleIcon =
+      this.passwordToggleIcon === 'far fa-eye-slash'
+        ? 'far fa-eye'
+        : 'far fa-eye-slash';
   }
 
   // onSubmit1() {
@@ -76,31 +81,32 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       const payload = {
-        username: this.loginForm.value.userName,
-        password: this.loginForm.value.password
-      }
-      this.loginService.userLogin(payload).subscribe((resp:any)=>{
+        usernameOrEmailOrPhone: this.loginForm.value.userName,
+        password: this.loginForm.value.password,
+      };
+      this.eservice.getLogin('/auth/login', payload).subscribe((resp: any) => {
         console.log(resp);
-        
-        if(resp){
-          localStorage.setItem('Token',resp.Token) // storing the response locally
-          localStorage.setItem('Username',resp.user.username)
-          localStorage.setItem('Role',resp.user.role)
 
-          sessionStorage.setItem('Token',resp.token) // storing the response in session
-          sessionStorage.setItem('Username',resp.user.username)
-          sessionStorage.setItem('Role',resp.user.role)
+        if (resp?.statusCode === 0) {
+          localStorage.setItem('Token', resp.Token); // storing the response locally
+          localStorage.setItem('Username', resp.user.username);
+          localStorage.setItem('Role', resp.user.role);
+
+          sessionStorage.setItem('Token', resp.token); // storing the response in session
+          sessionStorage.setItem('Username', resp.user.username);
+          sessionStorage.setItem('Role', resp.user.role);
 
           this.route.navigate(['/main']);
-        }else{
-          console.log("Invalid credentials");
+        } else {
+          this.alert.showCustomPopup('error', 'Invalid Credential');
         }
-      })
-
+      });
     } else {
-      console.log("Form is Invalid!");
+      if (this.loginForm.get('userName')?.hasError('required')) {
+        this.alert.showCustomPopup('error', 'Plese enter UserName');
+      } else {
+        this.alert.showCustomPopup('error', 'Plese enter Password');
+      }
     }
   }
-
-
 }
