@@ -103,7 +103,10 @@ export class LoginComponent implements OnInit {
       this.eservice.getLogin('/auth/login', payload).subscribe((resp: any) => {
         console.log(resp);
 
-        if (resp?.statusCode === 0) {
+        if (
+          resp?.statusCode === 0 &&
+          resp?.responseContent?.role === 'GATEPASS_ADMIN'
+        ) {
           localStorage.setItem('role', resp?.responseContent?.role);
           localStorage.setItem('phone', resp?.responseContent?.phone);
           localStorage.setItem(
@@ -117,7 +120,13 @@ export class LoginComponent implements OnInit {
             resp.responseContent.refreshToken
           );
 
-          this.route.navigate(['gatapass-admin','dashboard']);
+          this.route.navigate(['gatapass-admin', 'dashboard']);
+          this.alert.showCustomPopup('success', 'Login Successful');
+        } else if (resp?.statusCode === 0) {
+          this.alert.showCustomPopup(
+            'warning',
+            'Your login was successful, but your role does not have access.'
+          );
         } else {
           this.alert.showCustomPopup('error', resp.errorMessage);
         }

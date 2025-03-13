@@ -1,5 +1,6 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -8,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class CommonService {
   baseUrls = (environment as any).baseUrl;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private router:Router) {}
 
   commonData(req: any): Observable<any> {
     const url = this.baseUrls + '/customdata/getdata';
@@ -35,4 +36,11 @@ export class CommonService {
     };
     return this.http.delete<any>(`${this.baseUrls}${path}/${value}`, { headers });
   }
+
+  logoutService() {
+  localStorage.clear();
+  this.router.navigate(['/login']);
+  }
+
+
 }
