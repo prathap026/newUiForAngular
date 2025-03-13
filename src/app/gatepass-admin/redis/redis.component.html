@@ -1,1 +1,34 @@
 <app-navbar></app-navbar>
+
+
+
+
+
+<div class="container mt-4">
+  <table class="table table-hover">
+    <thead class="bg-secondary text-light">
+      <tr>
+        <th>KEY</th>
+        <th>VALUE</th>
+        <th>DELETE</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of redisResult | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+        <td>{{ item.key }}</td>
+        <td>{{ item.value }}</td>
+        <td><button class="btn" (click)="deleteRedisvalueFromKey(item.key)"><i class="fas fa-trash" style="color: #f00000;font-size: 30px;"></i></button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination Controls -->
+  <div class="d-flex justify-content-center">
+    <pagination-controls
+      (pageChange)="p = $event"
+      previousLabel="Previous"
+      nextLabel="Next"
+      [responsive]="true"
+    ></pagination-controls>
+  </div>
+</div>

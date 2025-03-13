@@ -17,7 +17,6 @@ export class DashboardComponent implements OnInit {
     this.customData();
   }
   customData() {
-    this.getdate.commonData;
 
     const req = {
       dataCode: 'GETALL_COMPANY_DETAILS_WITH_LOG',

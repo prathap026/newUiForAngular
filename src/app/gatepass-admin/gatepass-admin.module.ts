@@ -6,13 +6,15 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { RedisComponent } from './redis/redis.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { DeletedCompanyComponent } from './deleted-company/deleted-company.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     RedisComponent,
-    NavbarComponent
+    NavbarComponent,
+    DeletedCompanyComponent
   ],
   imports: [
     CommonModule,

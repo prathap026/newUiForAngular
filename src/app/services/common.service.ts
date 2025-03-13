@@ -19,4 +19,20 @@ export class CommonService {
     const url = this.baseUrls + path;
     return this.http.post<any>(url, req);
   }
+
+  getAll(path: any) {
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    };
+    return this.http.get<any>(`${this.baseUrls}${path}`, { headers });
+  }
+
+  deleteByKey(path: any,value:any) {
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    };
+    return this.http.delete<any>(`${this.baseUrls}${path}/${value}`, { headers });
+  }
 }

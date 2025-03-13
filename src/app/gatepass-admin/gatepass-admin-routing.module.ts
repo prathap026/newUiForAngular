@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RedisComponent } from './redis/redis.component';
+import { DeletedCompanyComponent } from './deleted-company/deleted-company.component';
 
 const routes: Routes = [
   {
@@ -9,6 +10,9 @@ const routes: Routes = [
   },
   {
     path:"redis",component:RedisComponent
+  },
+  {
+    path:"deleted-company",component:DeletedCompanyComponent
   }
 ];
 
