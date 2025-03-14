@@ -122,11 +122,24 @@ export class LoginComponent implements OnInit {
 
           this.route.navigate(['gatapass-admin', 'dashboard']);
           this.alert.showCustomPopup('success', 'Login Successful');
-        } else if (resp?.statusCode === 0) {
-          this.alert.showCustomPopup(
-            'warning',
-            'Your login was successful, but your role does not have access.'
+        } else if (
+          resp?.statusCode === 0 &&
+          resp?.responseContent?.role === "ORGANIZATION_ADMIN"
+        ) {
+          localStorage.setItem('role', resp?.responseContent?.role);
+          localStorage.setItem('phone', resp?.responseContent?.phone);
+          localStorage.setItem(
+            'accessToken',
+            resp?.responseContent?.accessToken
           );
+          sessionStorage.setItem('userName', resp?.responseContent?.userName);
+          sessionStorage.setItem('email', resp?.responseContent?.email);
+          sessionStorage.setItem(
+            'refreshToken',
+            resp.responseContent.refreshToken
+          );
+          this.route.navigate(['organization-admin', 'dashboard']);
+          this.alert.showCustomPopup('success', 'Login Successful');
         } else {
           this.alert.showCustomPopup('error', resp.errorMessage);
         }

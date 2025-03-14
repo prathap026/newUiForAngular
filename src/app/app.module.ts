@@ -15,6 +15,7 @@ import { ProductComponent } from './product/product.component';
 import { CompanyRegistrationComponent } from './company-registration/company-registration.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { UserregistrationComponent } from './userregistration/userregistration.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     SignupComponent,
     ProductComponent,
     CompanyRegistrationComponent,
+    UserregistrationComponent,
   ],
   imports: [
     BrowserModule,
