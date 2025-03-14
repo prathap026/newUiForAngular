@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from '../services/common.service';
 import { AlertService } from '../services/alert.service';
+import { CompanyService } from '../services/company.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-company-registration',
@@ -18,7 +20,9 @@ export class CompanyRegistrationComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private getData: CommonService,
-    private alert: AlertService
+    private alert: AlertService,
+    private company: CompanyService,
+    private router: Router
   ) {
     this.registerForm = this.fb.group({
       companyName: ['', Validators.required],
@@ -57,7 +61,46 @@ export class CompanyRegistrationComponent implements OnInit {
   onSubmit() {
     if (this.registerForm.valid) {
       console.log(this.registerForm.value);
-      alert('Registration Successful!');
+
+      const payload = {
+        companyName: this.registerForm.value.companyName,
+        companyShortName: this.registerForm.value.companyShortName,
+        dateOfEstablishment: this.registerForm.value.dateOfEstablishment,
+        countryOfIncorporation: this.registerForm.value.countryOfIncorporation,
+        registrationNumber: this.registerForm.value.registrationNumber,
+        gst: this.registerForm.value.gst,
+        alternateContactNumber: this.registerForm.value.alternateContactNumber,
+        landlineNumber: this.registerForm.value.landlineNumber,
+        websiteUrl: this.registerForm.value.websiteUrl,
+        createdDate: new Date().toISOString(),
+        modifiedDate: new Date().toISOString(),
+        emailId: this.registerForm.value.emailId,
+        businessPanCard: this.registerForm.value.businessPanCard,
+        accountStatus: true,
+        addressDTO: {
+          street: this.registerForm.value.street,
+          cityId: this.registerForm.value.cityId,
+          stateId: this.registerForm.value.stateId,
+          zipCode: this.registerForm.value.zipCode,
+          countryId: this.registerForm.value.countryOfIncorporation,
+          createdAt: new Date().toISOString(), // Current date and time
+          updatedAt: new Date().toISOString(), // Current date and time
+        },
+      };
+
+      console.log(payload);
+
+      this.company
+        .addOrganization('/organization/add', payload)
+        .subscribe((res) => {
+          console.log(res);
+          if (res.statusCode == 0) {
+            this.alert.showCustomPopup('success', res.responseMessage);
+            this.router.navigate(['/']);
+          } else {
+            this.alert.showCustomPopup('error', res.responseMessage);
+          }
+        });
     } else {
       this.showValidationErrors();
     }
@@ -66,65 +109,49 @@ export class CompanyRegistrationComponent implements OnInit {
   showValidationErrors() {
     if (this.registerForm.get('companyName')?.invalid) {
       this.alert.showCustomPopup('error', 'Please enter company name');
-    }
-    else if (this.registerForm.get('companyShortName')?.invalid) {
+    } else if (this.registerForm.get('companyShortName')?.invalid) {
       this.alert.showCustomPopup('error', 'Please enter company short name');
-    }
-    else if (this.registerForm.get('dateOfEstablishment')?.invalid) {
+    } else if (this.registerForm.get('dateOfEstablishment')?.invalid) {
       this.alert.showCustomPopup(
         'error',
         'Please enter the date of establishment'
       );
-    }
-    else if (this.registerForm.get('countryOfIncorporation')?.invalid) {
+    } else if (this.registerForm.get('countryOfIncorporation')?.invalid) {
       this.alert.showCustomPopup(
         'error',
         'Please select a country of incorporation'
       );
-    }
-    else if (this.registerForm.get('emailId')?.invalid) {
+    } else if (this.registerForm.get('emailId')?.invalid) {
       this.alert.showCustomPopup('error', 'Please enter a valid email');
-    }
-    else if (this.registerForm.get('cityId')?.invalid) {
+    } else if (this.registerForm.get('cityId')?.invalid) {
       this.alert.showCustomPopup('error', 'Please select a city');
-    }
-    else if (this.registerForm.get('stateId')?.invalid) {
+    } else if (this.registerForm.get('stateId')?.invalid) {
       this.alert.showCustomPopup('error', 'Please select a state');
-    }
-    else if (this.registerForm.get('countryId')?.invalid) {
+    } else if (this.registerForm.get('countryId')?.invalid) {
       this.alert.showCustomPopup('error', 'Please select a country');
-    }
-    else if (this.registerForm.get('alternateContactNumber')?.invalid) {
+    } else if (this.registerForm.get('alternateContactNumber')?.invalid) {
       this.alert.showCustomPopup('error', 'Please enter a valid mobile number');
-    }
-    else if (this.registerForm.get('registrationNumber')?.invalid) {
+    } else if (this.registerForm.get('registrationNumber')?.invalid) {
       this.alert.showCustomPopup(
         'error',
         'Please enter the registration number'
       );
-    }
-    else if (this.registerForm.get('gst')?.invalid) {
+    } else if (this.registerForm.get('gst')?.invalid) {
       this.alert.showCustomPopup('error', 'Please enter GST details');
-    }
-    else if (this.registerForm.get('landlineNumber')?.invalid) {
+    } else if (this.registerForm.get('landlineNumber')?.invalid) {
       this.alert.showCustomPopup('error', 'Please enter a landline number');
-    }
-    else if (this.registerForm.get('websiteUrl')?.invalid) {
+    } else if (this.registerForm.get('websiteUrl')?.invalid) {
       this.alert.showCustomPopup('error', 'Please enter a valid website URL');
-    }
-    else if (this.registerForm.get('businessPanCard')?.invalid) {
+    } else if (this.registerForm.get('businessPanCard')?.invalid) {
       this.alert.showCustomPopup(
         'error',
         'Please enter a valid PAN card number'
       );
-    }
-    else if (this.registerForm.get('street')?.invalid) {
+    } else if (this.registerForm.get('street')?.invalid) {
       this.alert.showCustomPopup('error', 'Please enter street details');
-    }
-    else if (this.registerForm.get('zipCode')?.invalid) {
+    } else if (this.registerForm.get('zipCode')?.invalid) {
       this.alert.showCustomPopup('error', 'Please enter a valid ZIP code');
-    }
-    else if (this.registerForm.get('comment')?.invalid) {
+    } else if (this.registerForm.get('comment')?.invalid) {
       this.alert.showCustomPopup('error', 'Please enter additional comments');
     }
   }
