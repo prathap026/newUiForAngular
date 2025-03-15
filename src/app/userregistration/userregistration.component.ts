@@ -28,8 +28,8 @@ export class UserregistrationComponent implements OnInit {
 
   reenterPasswordFieldType: string = 'password';
   reenterPasswordToggleIcon: string = 'far fa-eye-slash';
-  orgId: any;
-  role: any;
+  orgId: any ;
+  role: any ;
 
   constructor(
     private fb: FormBuilder,
@@ -67,9 +67,11 @@ export class UserregistrationComponent implements OnInit {
       });
   }
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      this.orgId = params.get('orgId');
-      this.role = params.get('role');
+    this.route.queryParams.subscribe(params => {
+      console.log(params); // Log all query params
+
+      this.orgId = params['orgId'];
+      this.role = params['role'];
       console.log(`Organization ID: ${this.orgId}, Role: ${this.role}`);
     });
     this.getAllCountryDetails();
@@ -80,15 +82,15 @@ export class UserregistrationComponent implements OnInit {
       console.log(this.registerForm.value);
 
       const payload = {
-        userName: this.registerForm.value.userName,
+        username: this.registerForm.value.userName,
         password: this.registerForm.value.password,
-        reenterPassword: this.registerForm.value.reenterPassword,
         countryOfIncorporation: this.registerForm.value.countryOfIncorporation,
-        registrationNumber: this.registerForm.value.registrationNumber,
-        alternateContactNumber: this.registerForm.value.alternateContactNumber,
+        phone: this.registerForm.value.alternateContactNumber,
         createdDate: new Date().toISOString(),
         modifiedDate: new Date().toISOString(),
-        emailId: this.registerForm.value.emailId,
+        email: this.registerForm.value.emailId,
+        orgId:this.orgId,
+        role:this.role,
         accountStatus: true,
         addressDTO: {
           street: this.registerForm.value.street,
