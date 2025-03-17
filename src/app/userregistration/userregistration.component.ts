@@ -10,6 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '../services/alert.service';
 import { CommonService } from '../services/common.service';
 import { CompanyService } from '../services/company.service';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-userregistration',
@@ -28,8 +30,14 @@ export class UserregistrationComponent implements OnInit {
 
   reenterPasswordFieldType: string = 'password';
   reenterPasswordToggleIcon: string = 'far fa-eye-slash';
-  orgId: any ;
-  role: any ;
+  orgId: any;
+  role: any;
+  userEmail: any;
+
+  private countrySelection = new Subject<string>();
+
+  private stateSelection = new Subject<string>();
+
 
   constructor(
     private fb: FormBuilder,
@@ -45,7 +53,6 @@ export class UserregistrationComponent implements OnInit {
         password: ['', Validators.required],
         reenterPassword: ['', Validators.required],
         countryOfIncorporation: ['', Validators.required],
-        emailId: ['', [Validators.required, Validators.email]],
         cityId: ['', Validators.required],
         stateId: ['', Validators.required],
         countryId: ['', Validators.required],
@@ -58,20 +65,66 @@ export class UserregistrationComponent implements OnInit {
       },
       { validators: this.passwordMatchValidator }
     );
-
-    // Listen for changes in countryOfIncorporation and update countryId
     this.registerForm
       .get('countryOfIncorporation')
       ?.valueChanges.subscribe((value) => {
-        this.registerForm.patchValue({ countryId: value });
+        this.registerForm.patchValue({
+          countryId: value,
+          stateId: '', // Reset state selection
+          cityId: '', // Reset city selection
+        });
+        this.stateResult = []; // Clear state dropdown options
+        this.cityResult = []; // Clear city dropdown options
+      });
+
+    this.countrySelection
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((id) => {
+        this.fetchStateDetails(id);
+      });
+
+    this.stateSelection
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((id) => {
+        this.fetchCityDetails(id);
       });
   }
+  getStateDetailByCountryId(event: Event) {
+    const id = (event.target as HTMLInputElement).value as string;
+    this.countrySelection.next(id); // Use debounced selection
+  }
+
+  getCityDetailByStateId(event: Event) {
+    const id = (event.target as HTMLInputElement).value as string;
+    this.stateSelection.next(id); // Use debounced selection
+  }
+
+  private fetchStateDetails(countryId: any) {
+    const req = {
+      dataCode: 'GET_STATE_DETAILS_BY_COUNTRYID',
+      placeholderKeyValueMap: { countryId },
+    };
+    this.getData.commonData(req).subscribe((res) => {
+      this.stateResult = res.statusCode == 0 ? res.responseContent : [];
+    });
+  }
+
+  private fetchCityDetails(stateId: any) {
+    const req = {
+      dataCode: 'GET_CITY_DETAILS_BY_STATEID',
+      placeholderKeyValueMap: { stateId },
+    };
+    this.getData.commonData(req).subscribe((res) => {
+      this.cityResult = res.statusCode == 0 ? res.responseContent : [];
+    });
+  }
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       console.log(params); // Log all query params
 
       this.orgId = params['orgId'];
       this.role = params['role'];
+      this.userEmail = params['userEmail'];
       console.log(`Organization ID: ${this.orgId}, Role: ${this.role}`);
     });
     this.getAllCountryDetails();
@@ -88,9 +141,9 @@ export class UserregistrationComponent implements OnInit {
         phone: this.registerForm.value.alternateContactNumber,
         createdDate: new Date().toISOString(),
         modifiedDate: new Date().toISOString(),
-        email: this.registerForm.value.emailId,
-        orgId:this.orgId,
-        role:this.role,
+        email: this.userEmail,
+        orgId: this.orgId,
+        role: this.role,
         accountStatus: true,
         addressDTO: {
           street: this.registerForm.value.street,
@@ -105,17 +158,17 @@ export class UserregistrationComponent implements OnInit {
 
       console.log(payload);
 
-      // this.company
-      //   .addOrganization('/organization/add', payload)
-      //   .subscribe((res) => {
-      //     console.log(res);
-      //     if (res.statusCode == 0) {
-      //       this.alert.showCustomPopup('success', res.responseMessage);
-      //       this.router.navigate(['/']);
-      //     } else {
-      //       this.alert.showCustomPopup('error', res.responseMessage);
-      //     }
-      //   });
+      this.company
+        .addOrganization('/api/user/register', payload)
+        .subscribe((res) => {
+          console.log(res);
+          if (res.statusCode == 0) {
+            this.alert.showCustomPopup('success', res.successMessage);
+            this.router.navigate(['/']);
+          } else {
+            this.alert.showCustomPopup('error', res.errorMessage);
+          }
+        });
     } else {
       this.showValidationErrors();
     }
@@ -139,9 +192,7 @@ export class UserregistrationComponent implements OnInit {
         'error',
         'Please select a country of incorporation'
       );
-    } else if (this.registerForm.get('emailId')?.invalid) {
-      this.alert.showCustomPopup('error', 'Please enter a valid email');
-    } else if (this.registerForm.get('cityId')?.invalid) {
+    }  else if (this.registerForm.get('cityId')?.invalid) {
       this.alert.showCustomPopup('error', 'Please select a city');
     } else if (this.registerForm.get('stateId')?.invalid) {
       this.alert.showCustomPopup('error', 'Please select a state');
@@ -175,47 +226,47 @@ export class UserregistrationComponent implements OnInit {
     });
   }
 
-  getStateDetailByCountryId(event: Event) {
-    console.log(event);
+  // getStateDetailByCountryId(event: Event) {
+  //   console.log(event);
 
-    const id = (event?.target as HTMLInputElement).value;
-    console.log(typeof id);
+  //   const id = (event?.target as HTMLInputElement).value;
+  //   console.log(typeof id);
 
-    const req = {
-      dataCode: 'GET_STATE_DETAILS_BY_COUNTRYID',
-      placeholderKeyValueMap: {
-        countryId: id,
-      },
-    };
-    this.getData.commonData(req).subscribe((res) => {
-      if (res.statusCode == 0) {
-        this.stateResult = res.responseContent;
-      } else {
-        this.stateResult = [];
-      }
-    });
-  }
+  //   const req = {
+  //     dataCode: 'GET_STATE_DETAILS_BY_COUNTRYID',
+  //     placeholderKeyValueMap: {
+  //       countryId: id,
+  //     },
+  //   };
+  //   this.getData.commonData(req).subscribe((res) => {
+  //     if (res.statusCode == 0) {
+  //       this.stateResult = res.responseContent;
+  //     } else {
+  //       this.stateResult = [];
+  //     }
+  //   });
+  // }
 
-  getCityDetailByStateId(event: Event) {
-    console.log(event);
+  // getCityDetailByStateId(event: Event) {
+  //   console.log(event);
 
-    const id = (event?.target as HTMLInputElement).value;
-    console.log(typeof id);
+  //   const id = (event?.target as HTMLInputElement).value;
+  //   console.log(typeof id);
 
-    const req = {
-      dataCode: 'GET_CITY_DETAILS_BY_STATEID',
-      placeholderKeyValueMap: {
-        stateId: id,
-      },
-    };
-    this.getData.commonData(req).subscribe((res) => {
-      if (res.statusCode == 0) {
-        this.cityResult = res.responseContent;
-      } else {
-        this.cityResult = [];
-      }
-    });
-  }
+  //   const req = {
+  //     dataCode: 'GET_CITY_DETAILS_BY_STATEID',
+  //     placeholderKeyValueMap: {
+  //       stateId: id,
+  //     },
+  //   };
+  //   this.getData.commonData(req).subscribe((res) => {
+  //     if (res.statusCode == 0) {
+  //       this.cityResult = res.responseContent;
+  //     } else {
+  //       this.cityResult = [];
+  //     }
+  //   });
+  // }
 
   onTogglePasswordVisibility() {
     this.passwordFieldType =

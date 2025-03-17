@@ -113,9 +113,9 @@ export class LoginComponent implements OnInit {
             'accessToken',
             resp?.responseContent?.accessToken
           );
-          sessionStorage.setItem('userName', resp?.responseContent?.userName);
-          sessionStorage.setItem('email', resp?.responseContent?.email);
-          sessionStorage.setItem(
+          localStorage.setItem('userName', resp?.responseContent?.userName);
+          localStorage.setItem('email', resp?.responseContent?.email);
+          localStorage.setItem(
             'refreshToken',
             resp.responseContent.refreshToken
           );
@@ -124,7 +124,7 @@ export class LoginComponent implements OnInit {
           this.alert.showCustomPopup('success', 'Login Successful');
         } else if (
           resp?.statusCode === 0 &&
-          resp?.responseContent?.role === "ORGANIZATION_ADMIN"
+          resp?.responseContent?.role === 'ORGANIZATION_ADMIN'
         ) {
           localStorage.setItem('role', resp?.responseContent?.role);
           localStorage.setItem('phone', resp?.responseContent?.phone);
@@ -132,12 +132,13 @@ export class LoginComponent implements OnInit {
             'accessToken',
             resp?.responseContent?.accessToken
           );
-          sessionStorage.setItem('userName', resp?.responseContent?.userName);
-          sessionStorage.setItem('email', resp?.responseContent?.email);
-          sessionStorage.setItem(
+          localStorage.setItem('userName', resp?.responseContent?.userName);
+          localStorage.setItem('email', resp?.responseContent?.email);
+          localStorage.setItem(
             'refreshToken',
             resp.responseContent.refreshToken
           );
+          localStorage.setItem('orgId', resp?.responseContent?.orgId);
           this.route.navigate(['organization-admin', 'dashboard']);
           this.alert.showCustomPopup('success', 'Login Successful');
         } else {

@@ -15,4 +15,10 @@ export class CompanyService {
     const url = this.baseUrls + path;
     return this.http.post<any>(url, req);
   }
+
+
+  sendEmailInvite(path: any, req: any) {
+    const url = this.baseUrls + path;
+    return this.http.post<any>(url, req);
+  }
 }

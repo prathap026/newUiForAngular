@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Invite Members</h2>
+<mat-dialog-content>
+  <div>
+    <!-- Email Input -->
+    <mat-form-field appearance="fill">
+      <mat-label>Enter Email</mat-label>
+      <input
+        matInput
+        [(ngModel)]="newEmail"
+        (keyup.enter)="addEmail()"
+        (blur)="checkEmailExists()"
+        placeholder="example@domain.com"
+      />
+    </mat-form-field>
+
+    <!-- Role Selection -->
+    <mat-form-field appearance="fill">
+      <mat-label>Select Role</mat-label>
+      <mat-select [(ngModel)]="newRole">
+        <mat-option *ngFor="let role of roles" [value]="role">
+          {{ role }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="addEmail()">Add</button>
+  </div>
+
+  <!-- List of Invited Emails -->
+  <div *ngIf="emails.length > 0">
+    <h3>Invited Emails:</h3>
+    <mat-list>
+      <mat-list-item *ngFor="let email of emails; let i = index">
+        {{ email.email }} - {{ email.role }}
+        <button mat-icon-button (click)="removeEmail(i)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</mat-dialog-content>
+
+<!-- Action Buttons -->
+<mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-button color="primary" (click)="submit()" [disabled]="emails.length === 0">
+    Send Invites
+  </button>
+</mat-dialog-actions>

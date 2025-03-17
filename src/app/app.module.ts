@@ -16,6 +16,7 @@ import { CompanyRegistrationComponent } from './company-registration/company-reg
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { UserregistrationComponent } from './userregistration/userregistration.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { UserregistrationComponent } from './userregistration/userregistration.c
     FormsModule,
     HttpClientModule,
     UserModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {
