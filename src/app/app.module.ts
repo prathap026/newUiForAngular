@@ -28,7 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SignupComponent,
     ProductComponent,
     CompanyRegistrationComponent,
-    UserregistrationComponent,
+    UserregistrationComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +38,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     UserModule,
     NgxPaginationModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    
   ],
   providers: [
     {

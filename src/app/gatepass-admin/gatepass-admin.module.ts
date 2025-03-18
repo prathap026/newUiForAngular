@@ -8,6 +8,12 @@ import { RedisComponent } from './redis/redis.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { DeletedCompanyComponent } from './deleted-company/deleted-company.component';
 
+// Angular Material Modules
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @NgModule({
   declarations: [
@@ -19,7 +25,10 @@ import { DeletedCompanyComponent } from './deleted-company/deleted-company.compo
   imports: [
     CommonModule,
     GatepassAdminRoutingModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatTableModule, // Add Angular Material Table Module
+    MatPaginatorModule, // Add Angular Material Paginator Module
+    MatSortModule,MatIconModule
   ]
 })
 export class GatepassAdminModule { }

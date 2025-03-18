@@ -1,34 +1,41 @@
 <app-navbar></app-navbar>
 
-
-
-
-
 <div class="container mt-4">
-  <table class="table table-hover">
-    <thead class="bg-secondary text-light">
-      <tr>
-        <th>KEY</th>
-        <th>VALUE</th>
-        <th>DELETE</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of redisResult | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
-        <td>{{ item.key }}</td>
-        <td>{{ item.value }}</td>
-        <td><button class="btn" (click)="deleteRedisvalueFromKey(item.key)"><i class="fas fa-trash" style="color: #f00000;font-size: 30px;"></i></button></td>
-      </tr>
-    </tbody>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- KEY Column -->
+    <ng-container matColumnDef="key">
+      <th mat-header-cell *matHeaderCellDef>KEY</th>
+      <td mat-cell *matCellDef="let item">{{ item.key }}</td>
+    </ng-container>
+
+    <!-- VALUE Column -->
+    <ng-container matColumnDef="value">
+      <th mat-header-cell *matHeaderCellDef>VALUE</th>
+      <td mat-cell *matCellDef="let item">{{ item.value }}</td>
+    </ng-container>
+
+    <!-- DELETE Column -->
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef>DELETE</th>
+      <td mat-cell *matCellDef="let item">
+        <button mat-icon-button (click)="deleteRedisvalueFromKey(item.key)">
+          <mat-icon style="color: #f00000;">delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Header Row -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <!-- Data Rows -->
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
-  <!-- Pagination Controls -->
-  <div class="d-flex justify-content-center">
-    <pagination-controls
-      (pageChange)="p = $event"
-      previousLabel="Previous"
-      nextLabel="Next"
-      [responsive]="true"
-    ></pagination-controls>
-  </div>
+  <!-- Pagination -->
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    [pageSize]="itemsPerPage"
+    [length]="redisResult.length"
+    (page)="onPageChange($event)"
+  ></mat-paginator>
 </div>

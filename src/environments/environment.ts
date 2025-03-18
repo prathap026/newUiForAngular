@@ -15,6 +15,6 @@ export const environment = {
       appId: "",
       measurementId: ""
     },
-    baseUrl: 'https://gatepassapiserver.onrender.com',
-    // baseUrl: 'http://localhost:10000',
+    // baseUrl: 'https://gatepassapiserver.onrender.com',
+    baseUrl: 'http://localhost:10000',
   };

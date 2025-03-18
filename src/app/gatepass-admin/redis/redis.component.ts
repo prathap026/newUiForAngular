@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { CommonService } from 'src/app/services/common.service';
 
 @Component({
@@ -8,13 +10,25 @@ import { CommonService } from 'src/app/services/common.service';
 })
 export class RedisComponent implements OnInit {
   redisResult: any[] = [];
-  // Pagination properties
-  p: number = 1; // Current page
-  itemsPerPage: number = 7;
+
   constructor(private getdate: CommonService) {}
   ngOnInit(): void {
     this.getAllStoredRedisKeysAndItsValues();
+    this.dataSource.paginator = this.paginator;
   }
+
+  // MatTable Configuration
+  displayedColumns: string[] = ['key', 'value', 'delete'];
+  dataSource = new MatTableDataSource<any>(this.redisResult);
+
+  // Pagination
+  itemsPerPage = 10;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  onPageChange(event: PageEvent): void {
+    this.itemsPerPage = event.pageSize;
+  }
+
   getAllStoredRedisKeysAndItsValues() {
     this.getdate.getAll('/redis/getAllkeys').subscribe((res: any) => {
       // Use 'any' for the response type
@@ -31,8 +45,12 @@ export class RedisComponent implements OnInit {
               JSON.stringify(value), // Fallback to stringifying the value
           })
         );
+        this.dataSource = new MatTableDataSource<any>(this.redisResult);
+        this.dataSource.paginator = this.paginator;
       } else {
         this.redisResult = [];
+        this.dataSource = new MatTableDataSource<any>(this.redisResult);
+        this.dataSource.paginator = this.paginator;
       }
     });
   }
