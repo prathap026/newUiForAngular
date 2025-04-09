@@ -14,6 +14,11 @@ export class DashboardComponent implements OnInit {
   constructor(private getdate: CommonService) {}
   ngOnInit(): void {
     this.customData();
+
+
+    this.getdate.getCompanies().subscribe((res) => {
+      console.log(res);
+    })
   }
   // MatTable Configuration
   displayedColumns: string[] = [

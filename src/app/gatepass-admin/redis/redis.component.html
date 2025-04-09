@@ -1,6 +1,8 @@
 <app-navbar></app-navbar>
 
-<div class="container mt-4">
+
+
+<div class="mat-table-container mt-4">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- KEY Column -->
     <ng-container matColumnDef="key">
@@ -29,6 +31,8 @@
     <!-- Data Rows -->
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+
+  
 
   <!-- Pagination -->
   <mat-paginator

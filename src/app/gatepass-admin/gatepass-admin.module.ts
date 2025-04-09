@@ -12,7 +12,7 @@ import { DeletedCompanyComponent } from './deleted-company/deleted-company.compo
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({

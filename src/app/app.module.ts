@@ -17,6 +17,11 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { UserregistrationComponent } from './userregistration/userregistration.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
+import { ApolloClient, InMemoryCache } from '@apollo/client/core';
+import { environment } from 'src/environments/environment';
+
 
 @NgModule({
   declarations: [
@@ -39,7 +44,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     UserModule,
     NgxPaginationModule,
     BrowserAnimationsModule,
-    
+    ApolloModule
+
   ],
   providers: [
     {
@@ -48,6 +54,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       multi: true,
     },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory(httpLink: HttpLink) {
+        return {
+          cache: new InMemoryCache(),
+          link: httpLink.create({ // ← Now works!
+            uri: environment.baseUrl+'/graphql',
+          })
+        };
+      },
+      deps: [HttpLink]
+    }
   ],
   bootstrap: [AppComponent],
 })
