@@ -1,16 +1,25 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Apollo, gql } from 'apollo-angular';
-import { GET_ALL_COMPANIES_QUERY, GET_COMPANY_BY_ID_QUERY } from '../graphql/queries/company.queries';
-import {DELETE_REDIS_KEY, GET_ALL_REDIS_DETAILS} from '../graphql/queries/redis.queries';
+import {
+  GET_ALL_COMPANIES_QUERY,
+  GET_COMPANY_BY_ID_QUERY,
+} from '../graphql/queries/company.queries';
+import {
+  DELETE_REDIS_KEY,
+  GET_ALL_REDIS_DETAILS,
+} from '../graphql/queries/redis.queries';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CommonService {
+  usersSubject = new BehaviorSubject<any[]>([]);
+  public users$ = this.usersSubject.asObservable(); // Expose as Observable
+
   baseUrls = (environment as any).baseUrl;
   constructor(
     private http: HttpClient,
@@ -76,9 +85,7 @@ export class CommonService {
     return this.graphqlQuery<any>(GET_ALL_REDIS_DETAILS, {});
   }
 
-
   getCompanyById(id: string) {
-
     return this.graphqlQuery<any>(GET_COMPANY_BY_ID_QUERY, { id });
   }
 

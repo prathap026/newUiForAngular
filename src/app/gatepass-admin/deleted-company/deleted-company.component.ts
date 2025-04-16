@@ -13,7 +13,16 @@ export class DeletedCompanyComponent implements OnInit {
 
   constructor(private getdate: CommonService) {}
   ngOnInit(): void {
-    this.customData();
+    this.getdate.users$.subscribe((data) => {
+      if (!data || data.length === 0) {
+        // Call API only if data is empty
+        this.customData();
+      } else {
+        // Use cached data
+        this.dataSource = new MatTableDataSource<any>(data);
+        this.dataSource.paginator = this.paginator;
+      }
+    });
   }
 
   // MatTable Configuration
@@ -42,6 +51,7 @@ export class DeletedCompanyComponent implements OnInit {
       dataCode: 'GETALL_DELETED_COMPANY_DETAILS',
       placeholderKeyValueMap: {},
     };
+
     this.getdate.commonData(req).subscribe((res) => {
       console.log(res);
       if (res.statusCode == 0) {
@@ -51,11 +61,13 @@ export class DeletedCompanyComponent implements OnInit {
         this.dataSource = new MatTableDataSource<any>(
           this.deletedCompanyResult
         );
-        // Reassign the paginator to the updated dataSource
         this.dataSource.paginator = this.paginator;
+
+        // Notify all subscribers with the new data
+        this.getdate.usersSubject.next(this.deletedCompanyResult);
       } else {
         this.deletedCompanyResult = [];
-        // Update the dataSource with an empty array
+
         this.dataSource = new MatTableDataSource<any>(
           this.deletedCompanyResult
         );

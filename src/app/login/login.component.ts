@@ -143,7 +143,21 @@ export class LoginComponent implements OnInit {
           this.route.navigate(['organization-admin', 'dashboard']);
           this.alert.showCustomPopup('success', 'Login Successful');
         } else {
-          this.alert.showCustomPopup('error', resp.errorMessage);
+          localStorage.setItem('role', resp?.responseContent?.role);
+          localStorage.setItem('phone', resp?.responseContent?.phone);
+          localStorage.setItem(
+            'accessToken',
+            resp?.responseContent?.accessToken
+          );
+          localStorage.setItem('userName', resp?.responseContent?.userName);
+          localStorage.setItem('email', resp?.responseContent?.email);
+          localStorage.setItem(
+            'refreshToken',
+            resp.responseContent.refreshToken
+          );
+          localStorage.setItem('orgId', resp?.responseContent?.orgId);
+          this.route.navigate(['organization-admin', 'dashboard']);
+          this.alert.showCustomPopup('success', 'Login Successful');
         }
       });
     } else {
